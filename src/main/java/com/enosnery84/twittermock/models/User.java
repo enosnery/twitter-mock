@@ -4,11 +4,12 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+@SequenceGenerator(name="user_seq", initialValue=0, allocationSize=100)
 @Entity
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
     private Long id;
 
     @NotNull
@@ -25,6 +26,21 @@ public class User {
 
     @OneToMany
     private List<User> following;
+
+    @OneToMany
+    private List<Tweet> tweets;
+
+    public User() {
+    }
+
+    public User(@NotNull String profileName, @NotNull String userName, @NotNull String password, List<User> followers, List<User> following, List<Tweet> tweets) {
+        this.profileName = profileName;
+        this.userName = userName;
+        this.password = password;
+        this.followers = followers;
+        this.following = following;
+        this.tweets = tweets;
+    }
 
     public Long getId() {
         return id;

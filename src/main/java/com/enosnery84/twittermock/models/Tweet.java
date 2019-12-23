@@ -1,17 +1,16 @@
 package com.enosnery84.twittermock.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
+@SequenceGenerator(name="tweet_seq", initialValue=0, allocationSize=100)
 @Entity
 public class Tweet {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tweet_seq")
     private Long id;
     @NotNull
     @Size(max = 140)
@@ -19,6 +18,14 @@ public class Tweet {
 
     @NotNull
     private java.util.Date dataRegister = new Date();
+
+    public Tweet() {
+    }
+
+    public Tweet(@NotNull @Size(max = 140) String tweet, Date dataRegister) {
+        this.tweet = tweet;
+        this.dataRegister = dataRegister;
+    }
 
     public Long getId() {
         return id;
