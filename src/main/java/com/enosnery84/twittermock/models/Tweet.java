@@ -19,6 +19,10 @@ public class Tweet {
     @NotNull
     private java.util.Date dataRegister = new Date();
 
+    @ManyToOne
+    @JoinColumn(name = "user_id",nullable = false)
+    private User user;
+
     public Tweet() {
     }
 
@@ -49,5 +53,13 @@ public class Tweet {
 
     public void setDataRegister(Date dataRegister) {
         this.dataRegister = dataRegister;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

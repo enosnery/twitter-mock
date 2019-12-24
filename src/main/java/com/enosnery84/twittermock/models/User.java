@@ -27,7 +27,7 @@ public class User {
     @OneToMany
     private List<User> following;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Tweet> tweets;
 
     public User() {
@@ -88,5 +88,13 @@ public class User {
 
     public void setFollowing(List<User> following) {
         this.following = following;
+    }
+
+    public List<Tweet> getTweets() {
+        return tweets;
+    }
+
+    public void setTweets(List<Tweet> tweets) {
+        this.tweets = tweets;
     }
 }
