@@ -1,16 +1,17 @@
 package com.enosnery84.twittermock.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
-@SequenceGenerator(name="tweet_seq", initialValue=0, allocationSize=100)
 @Entity
 public class Tweet {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tweet_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     @NotNull
     @Size(max = 140)
@@ -19,9 +20,10 @@ public class Tweet {
     @NotNull
     private java.util.Date dataRegister = new Date();
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "user_id",nullable = false)
-    private User user;
+    private TweetUser tweetUser;
 
     public Tweet() {
     }
@@ -55,11 +57,11 @@ public class Tweet {
         this.dataRegister = dataRegister;
     }
 
-    public User getUser() {
-        return user;
+    public TweetUser getTweetUser() {
+        return tweetUser;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setTweetUser(TweetUser tweetUser) {
+        this.tweetUser = tweetUser;
     }
 }

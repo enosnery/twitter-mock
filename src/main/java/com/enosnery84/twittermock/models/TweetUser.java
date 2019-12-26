@@ -4,12 +4,11 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@SequenceGenerator(name="user_seq", initialValue=0, allocationSize=100)
 @Entity
-public class User {
+public class TweetUser {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @NotNull
@@ -22,18 +21,18 @@ public class User {
     private String password;
 
     @OneToMany
-    private List<User> followers;
+    private List<TweetUser> followers;
 
     @OneToMany
-    private List<User> following;
+    private List<TweetUser> following;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tweetUser")
     private List<Tweet> tweets;
 
-    public User() {
+    public TweetUser() {
     }
 
-    public User(@NotNull String profileName, @NotNull String userName, @NotNull String password, List<User> followers, List<User> following, List<Tweet> tweets) {
+    public TweetUser(@NotNull String profileName, @NotNull String userName, @NotNull String password, List<TweetUser> followers, List<TweetUser> following, List<Tweet> tweets) {
         this.profileName = profileName;
         this.userName = userName;
         this.password = password;
@@ -74,19 +73,19 @@ public class User {
         this.password = password;
     }
 
-    public List<User> getFollowers() {
+    public List<TweetUser> getFollowers() {
         return followers;
     }
 
-    public void setFollowers(List<User> followers) {
+    public void setFollowers(List<TweetUser> followers) {
         this.followers = followers;
     }
 
-    public List<User> getFollowing() {
+    public List<TweetUser> getFollowing() {
         return following;
     }
 
-    public void setFollowing(List<User> following) {
+    public void setFollowing(List<TweetUser> following) {
         this.following = following;
     }
 
