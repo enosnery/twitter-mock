@@ -11,6 +11,6 @@ import java.util.List;
 public interface TweetRepository extends JpaRepository<Tweet, Long> {
 
     @Query("FROM Tweet WHERE id IN (?1) ORDER BY id DESC ")
-    List<Tweet> findAllTweetsByUserAndFollowers(List<Long> userIds);
+    List<Tweet> findTop10TweetsByUserAndFollowers(List<Long> userIds);
     
 }

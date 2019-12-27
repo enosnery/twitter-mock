@@ -70,4 +70,16 @@ public class TwitterController {
         response.put(Constants.RESPONSE, message);
         return response;
     }
+
+    /**
+     * @param request - corpo da requisição (JSON contendo o Id do usuário solicitante e o Id do usuário que não será mais seguido.)
+     * Método para deixar de seguir outro usuário.
+     */
+    @PostMapping("/unfollow")
+    public HashMap<String, Object> unfollow(@RequestBody FollowRequest request){
+        response = new HashMap<>();
+        String message = userService.unfollow(request);
+        response.put(Constants.RESPONSE, message);
+        return response;
+    }
 }

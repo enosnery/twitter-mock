@@ -37,8 +37,7 @@ public class UserService {
             for(TweetUser following : temp.getFollowing()){
                 userIds.add(following.getId());
             }
-            System.out.println(userIds);
-            return tweetRepository.findAllTweetsByUserAndFollowers(userIds);
+            return tweetRepository.findTop10TweetsByUserAndFollowers(userIds);
         } else {
             return null;
         }
@@ -52,6 +51,22 @@ public class UserService {
                 user.getFollowing().add(following);
                 userRepository.save(user);
                 return "Você agora está seguindo " + following.getProfileName();
+            }else{
+                return Constants.ERROR_FOLLOWING;
+            }
+        }else{
+            return Constants.ERROR_USER;
+        }
+    }
+
+    public String unfollow(FollowRequest request){
+        if(validateUser(request.userId)){
+            if(validateUser(request.followingId)){
+                TweetUser user = userRepository.findById(request.userId).get();
+                TweetUser following = userRepository.findById(request.followingId).get();
+                user.getFollowing().remove(following);
+                userRepository.save(user);
+                return "Você deixou de seguir " + following.getProfileName();
             }else{
                 return Constants.ERROR_FOLLOWING;
             }
