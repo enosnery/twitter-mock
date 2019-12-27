@@ -7,6 +7,10 @@ import com.enosnery84.twittermock.repository.TweetRepository;
 import com.enosnery84.twittermock.repository.UserRepository;
 import com.enosnery84.twittermock.requests.FollowRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,7 +41,8 @@ public class UserService {
             for(TweetUser following : temp.getFollowing()){
                 userIds.add(following.getId());
             }
-            return tweetRepository.findTop10TweetsByUserAndFollowers(userIds);
+            Pageable pageable = PageRequest.of(0, 10, Sort.Direction.DESC, "id");
+            return tweetRepository.findTop10ByUserAndFollowers(userIds, pageable).getContent();
         } else {
             return null;
         }
