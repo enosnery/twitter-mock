@@ -6,7 +6,6 @@ import com.enosnery84.twittermock.requests.FollowRequest;
 import com.enosnery84.twittermock.requests.TweetRequest;
 import com.enosnery84.twittermock.service.TweetService;
 import com.enosnery84.twittermock.service.UserService;
-import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +23,13 @@ public class TwitterController {
     TweetService tweetService;
 
     private HashMap<String, Object> response;
+
+    @GetMapping("/getusers")
+    public HashMap<String, Object> getUsers(@RequestParam Long userId){
+        response = new HashMap<>();
+        response.put("response", userService.getUsers(userId));
+        return response;
+    }
 
     /**
      * @param userId - Id do usuário que solicita o feed

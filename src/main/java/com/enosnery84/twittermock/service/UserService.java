@@ -6,6 +6,7 @@ import com.enosnery84.twittermock.models.TweetUser;
 import com.enosnery84.twittermock.repository.TweetRepository;
 import com.enosnery84.twittermock.repository.UserRepository;
 import com.enosnery84.twittermock.requests.FollowRequest;
+import com.enosnery84.twittermock.requests.ResponseUserItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,6 +28,27 @@ public class UserService {
 
     public TweetUser findByUserNameAndPassword(String username, String password){
         return userRepository.findByUserNameAndPassword(username, password);
+    }
+
+    public List<ResponseUserItem> getUsers(Long userId){
+        if(validateUser(userId)) {
+            TweetUser user = userRepository.findById(userId).get();
+            List<TweetUser> allUsers = userRepository.findAllByIdIsNot(userId);
+            List<ResponseUserItem> response = new ArrayList<>();
+            for (TweetUser tu : allUsers) {
+                ResponseUserItem temp = new ResponseUserItem();
+                temp.id = tu.getId();
+                temp.name = tu.getProfileName();
+                if(user.getFollowing().contains(tu)){
+                    temp.isFollowing = true;
+                }
+                response.add(temp);
+            }
+            return response;
+        }else{
+        return new ArrayList<>();
+        }
+
     }
 
     public Boolean validateUser(Long userId){
