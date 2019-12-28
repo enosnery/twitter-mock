@@ -24,7 +24,12 @@ public class TwitterController {
     TweetService tweetService;
 
     private HashMap<String, Object> response;
-
+    /**
+     * @param userId - Id do usuário que solicita o feed
+     * Método que retorna os usuários cadastrados no sistema. Se o userId passado for 0, a API retornará todos os usuários.
+     * Se userId for diferente de 0, irá retornar todos os usuários diferentes do Id passado, e irá retornar os usuários restantes,
+     * e se eles estão sendo seguidos pelo usuário do userId.
+     */
     @GetMapping("/getusers")
     public HashMap<String, Object> getUsers(@RequestParam Long userId){
         response = new HashMap<>();
