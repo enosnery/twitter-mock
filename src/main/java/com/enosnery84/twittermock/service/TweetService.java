@@ -23,7 +23,7 @@ public class TweetService {
             Tweet temp = new Tweet();
             temp.setTweetUser(userRepository.findById(request.userId).get());
             temp.setTweet(request.tweet);
-            temp.setDataRegister(new Date());
+            temp.setDateRegister(new Date());
             tweetRepository.save(temp);
             return true;
         }catch (Exception ex){

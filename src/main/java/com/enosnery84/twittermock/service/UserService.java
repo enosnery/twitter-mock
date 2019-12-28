@@ -6,9 +6,9 @@ import com.enosnery84.twittermock.models.TweetUser;
 import com.enosnery84.twittermock.repository.TweetRepository;
 import com.enosnery84.twittermock.repository.UserRepository;
 import com.enosnery84.twittermock.requests.FollowRequest;
+import com.enosnery84.twittermock.requests.ResponseTweetItem;
 import com.enosnery84.twittermock.requests.ResponseUserItem;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -30,7 +30,19 @@ public class UserService {
         return userRepository.findByUserNameAndPassword(username, password);
     }
 
-    public List<ResponseUserItem> getUsers(Long userId){
+    public List<ResponseUserItem> getUsers(){
+        List<TweetUser> allUsers = userRepository.findAll();
+        List<ResponseUserItem> response = new ArrayList<>();
+        for (TweetUser tu : allUsers) {
+            ResponseUserItem temp = new ResponseUserItem();
+            temp.id = tu.getId();
+            temp.name = tu.getProfileName();
+            response.add(temp);
+        }
+        return response;
+    }
+
+    public List<ResponseUserItem> getFollowing(Long userId){
         if(validateUser(userId)) {
             TweetUser user = userRepository.findById(userId).get();
             List<TweetUser> allUsers = userRepository.findAllByIdIsNot(userId);
@@ -55,16 +67,25 @@ public class UserService {
         return userRepository.findById(userId).isPresent();
     }
 
-    public List<Tweet> getTweets(Long userId) {
+    public List<ResponseTweetItem> getTweets(Long userId) {
         if (validateUser(userId)) {
             TweetUser temp = userRepository.findById(userId).get();
             List<Long> userIds = new ArrayList<>();
+            List<ResponseTweetItem> response = new ArrayList<>();
             userIds.add(temp.getId());
             for(TweetUser following : temp.getFollowing()){
                 userIds.add(following.getId());
             }
             Pageable pageable = PageRequest.of(0, 10, Sort.Direction.DESC, "id");
-            return tweetRepository.findTop10ByUserAndFollowers(userIds, pageable).getContent();
+            for(Tweet tt : tweetRepository.findTop10ByUserAndFollowers(userIds, pageable).getContent()){
+                ResponseTweetItem item = new ResponseTweetItem();
+                item.id = tt.getId();
+                item.tweet = tt.getTweet();
+                item.dateRegister = tt.getDateRegister();
+                item.tweetUser = tt.getTweetUser().getProfileName();
+                response.add(item);
+            }
+            return response;
         } else {
             return null;
         }

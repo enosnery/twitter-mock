@@ -18,7 +18,7 @@ public class Tweet {
     private String tweet;
 
     @NotNull
-    private java.util.Date dataRegister = new Date();
+    private java.util.Date dateRegister = new Date();
 
     @JsonBackReference
     @ManyToOne
@@ -28,9 +28,9 @@ public class Tweet {
     public Tweet() {
     }
 
-    public Tweet(@NotNull @Size(max = 140) String tweet, Date dataRegister) {
+    public Tweet(@NotNull @Size(max = 140) String tweet, Date dateRegister) {
         this.tweet = tweet;
-        this.dataRegister = dataRegister;
+        this.dateRegister = dateRegister;
     }
 
     public Long getId() {
@@ -49,12 +49,12 @@ public class Tweet {
         this.tweet = tweet;
     }
 
-    public Date getDataRegister() {
-        return dataRegister;
+    public Date getDateRegister() {
+        return dateRegister;
     }
 
-    public void setDataRegister(Date dataRegister) {
-        this.dataRegister = dataRegister;
+    public void setDateRegister(Date dataRegister) {
+        this.dateRegister = dataRegister;
     }
 
     public TweetUser getTweetUser() {

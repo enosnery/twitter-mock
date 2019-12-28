@@ -3,6 +3,7 @@ package com.enosnery84.twittermock.controller;
 import com.enosnery84.twittermock.constants.Constants;
 import com.enosnery84.twittermock.models.Tweet;
 import com.enosnery84.twittermock.requests.FollowRequest;
+import com.enosnery84.twittermock.requests.ResponseTweetItem;
 import com.enosnery84.twittermock.requests.TweetRequest;
 import com.enosnery84.twittermock.service.TweetService;
 import com.enosnery84.twittermock.service.UserService;
@@ -27,7 +28,11 @@ public class TwitterController {
     @GetMapping("/getusers")
     public HashMap<String, Object> getUsers(@RequestParam Long userId){
         response = new HashMap<>();
-        response.put("response", userService.getUsers(userId));
+        if(userId == 0){
+         response.put("response", userService.getUsers());
+        }else {
+            response.put("response", userService.getFollowing(userId));
+        }
         return response;
     }
 
@@ -39,7 +44,7 @@ public class TwitterController {
     @GetMapping("/feed")
     public HashMap<String, Object> getNewsFeed(@RequestParam Long userId){
         response = new HashMap<>();
-        List<Tweet> tweets = userService.getTweets(userId);
+        List<ResponseTweetItem> tweets = userService.getTweets(userId);
         if(tweets == null){
             response.put("response", "Este usuário não existe");
         }else {

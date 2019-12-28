@@ -23,7 +23,7 @@ public class TweetUser {
     @OneToMany
     private List<TweetUser> followers;
 
-    @OneToMany
+    @ManyToMany
     private List<TweetUser> following;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tweetUser")
